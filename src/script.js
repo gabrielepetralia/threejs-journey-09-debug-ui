@@ -33,11 +33,25 @@ scene.add(mesh)
 // Range tweak
 // gui.add(mesh.position, 'y', - 3, 3, 0.01)
 gui
+    .add(mesh.position, 'x')
+    .min(- 3)
+    .max(3)
+    .step(0.01)
+    .name('X axis')
+
+gui
     .add(mesh.position, 'y')
     .min(- 3)
     .max(3)
     .step(0.01)
-    .name('elevation')
+    .name('Y axis')
+
+gui
+    .add(mesh.position, 'z')
+    .min(- 3)
+    .max(3)
+    .step(0.01)
+    .name('Z axis')
 
 // Checkbox tweak
 gui
