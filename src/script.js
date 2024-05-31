@@ -1,6 +1,13 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import gsap from 'gsap'
+import GUI from 'lil-gui'
+
+/**
+ * Debug
+ */
+const gui = new GUI()
+const debugObject = {}
 
 /**
  * Base
@@ -14,10 +21,54 @@ const scene = new THREE.Scene()
 /**
  * Object
  */
+debugObject.color = '#d74f37'
+
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2)
-const material = new THREE.MeshBasicMaterial({ color: '#ff0000' })
+const material = new THREE.MeshBasicMaterial({ color: debugObject.color })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
+
+// Debug UI tweaks
+
+// Range tweak
+// gui.add(mesh.position, 'y', - 3, 3, 0.01)
+gui
+    .add(mesh.position, 'y')
+    .min(- 3)
+    .max(3)
+    .step(0.01)
+    .name('elevation')
+
+// Checkbox tweak
+gui
+    .add(mesh, 'visible')
+
+gui
+    .add(mesh.material, 'wireframe')
+
+// Color tweak
+// gui
+//     .addColor(mesh.material, 'color')
+//     .onChange((value) => {
+//         console.log(value.getHexString())
+//     })
+gui
+    .addColor(debugObject, 'color')
+    .onChange((value) => {
+        material.color.set(debugObject.color)
+    })
+
+// Button tweak
+debugObject.spin = () => {
+    gsap.to(mesh.rotation, { y: mesh.rotation.y + Math.PI * 2, 
+                            duration: 2, 
+                            ease: "power1.inOut", 
+                            repeat: 1, 
+                            yoyo: true }
+            ) 
+}
+
+gui.add(debugObject, 'spin')
 
 /**
  * Sizes
